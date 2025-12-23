@@ -170,10 +170,10 @@ bool InitializeDirect3d11App(HINSTANCE hInstance)
     swapChainDesc.SampleDesc.Count = 1;
     swapChainDesc.SampleDesc.Quality = 0;
     swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-    swapChainDesc.BufferCount = 1;
+    swapChainDesc.BufferCount = 2;                              // triple buffering
     swapChainDesc.OutputWindow = global_hwnd; 
     swapChainDesc.Windowed = TRUE; 
-    swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+    swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;   // flip model
 
 
     //Create our SwapChain (initialisation of entire pipeline)
@@ -230,7 +230,7 @@ void DrawScene()
     d3d11DevCon->ClearRenderTargetView(renderTargetView, bgColor);
 
     //Present the backbuffer to the screen
-    SwapChain->Present(0, 0);
+    SwapChain->Present(0, 0); //Present(1, 0) for mailbox or flip behaviour: https://www.4rknova.com/blog/2025/09/12/triple-buffering#triple-buffering
 }
 
 ///////////////**************new**************////////////////////
